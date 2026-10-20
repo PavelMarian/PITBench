@@ -1,0 +1,33 @@
+{
+ "_comment": "Manual triage of every behaviour-changing mutant of datasets/<ds>/layers/reference_pipeline.py: is the mutated program a point-in-time violation? Keyed by (operator, before, after); the reference pipelines share their code across datasets. Triaged by reading the mutated function, independently of the checker's verdict.",
+ "labels": [
+  {"operator": "drop_cutoff", "before": "ev[TIME] <= t", "after": "ev[TIME] <= pd.Timestamp.max", "pit_violation": true,
+   "reason": "features / eligibility read rows after t"},
+  {"operator": "drop_cutoff", "before": "ev[TIME] <= hi", "after": "ev[TIME] <= pd.Timestamp.max", "pit_violation": true,
+   "reason": "label window loses its horizon cap (t, inf)"},
+  {"operator": "extend_horizon", "before": "t + pd.Timedelta(days=H)", "after": "t + pd.Timedelta(days=4 * H)", "pit_violation": true,
+   "reason": "label reads beyond t+h; training labels reach past t"},
+  {"operator": "future_offset", "before": "t - pd.Timedelta(days=off)", "after": "t + pd.Timedelta(days=off)", "pit_violation": true,
+   "reason": "training examples taken at seeds after t"},
+  {"operator": "future_offset", "before": "t - pd.Timedelta(days=H)", "after": "t + pd.Timedelta(days=H)", "pit_violation": false,
+   "reason": "look-back window start moved after t, but rows are already cut at <= t: the window is empty, nothing after t is read"},
+  {"operator": "future_offset", "before": "t - pd.Timedelta(days=ELIG)", "after": "t + pd.Timedelta(days=ELIG)", "pit_violation": false,
+   "reason": "eligibility window empty for the same reason: upper cut <= t is still applied"},
+  {"operator": "boundary_shift", "before": "ev[TIME] > lo", "after": "ev[TIME] >= lo", "pit_violation": true,
+   "reason": "label window [t, t+h]: an event at exactly t is both feature and label"},
+  {"operator": "boundary_shift", "before": "ev[TIME] <= t", "after": "ev[TIME] < t", "pit_violation": false,
+   "reason": "stricter cutoff: drops events at exactly t, reads nothing new"},
+  {"operator": "boundary_shift", "before": "ev[TIME] <= hi", "after": "ev[TIME] < hi", "pit_violation": false,
+   "reason": "label window (t, t+h): shorter, still after t"},
+  {"operator": "boundary_shift", "before": "ev[TIME] > t - pd.Timedelta(days=H)", "after": "ev[TIME] >= t - pd.Timedelta(days=H)", "pit_violation": false,
+   "reason": "look-back start one tick earlier"},
+  {"operator": "boundary_shift", "before": "ev[TIME] > t - pd.Timedelta(days=ELIG)", "after": "ev[TIME] >= t - pd.Timedelta(days=ELIG)", "pit_violation": false,
+   "reason": "eligibility window start one tick earlier"},
+  {"operator": "drop_lower_bound", "before": "ev[TIME] > lo", "after": "ev[TIME] > pd.Timestamp.min", "pit_violation": false,
+   "reason": "label counts past events too: a wrong target, but nothing after t+h is read"},
+  {"operator": "drop_lower_bound", "before": "ev[TIME] > t - pd.Timedelta(days=H)", "after": "ev[TIME] > pd.Timestamp.min", "pit_violation": false,
+   "reason": "longer look-back"},
+  {"operator": "drop_lower_bound", "before": "ev[TIME] > t - pd.Timedelta(days=ELIG)", "after": "ev[TIME] > pd.Timestamp.min", "pit_violation": false,
+   "reason": "eligibility over the whole past"}
+ ]
+}

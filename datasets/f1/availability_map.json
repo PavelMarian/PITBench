@@ -1,0 +1,70 @@
+{
+ "_comment": "Race-derived rows are timed by available_at (race start, or 23:59 of race day when the source has no time), qualifying by the qualifying session. Career totals on drivers/constructors/circuits are dump-time aggregates.",
+ "time_cols": {
+  "races": "available_at",
+  "race_results": "available_at",
+  "qualifying_results": "available_at",
+  "driver_standings": "available_at",
+  "constructor_standings": "available_at",
+  "pit_stops": "available_at"
+ },
+ "self_availability_cols": {
+  "drivers": [
+   "date_of_death"
+  ]
+ },
+ "gatekeeper_cols": {},
+ "key_hints": [
+  "_id"
+ ],
+ "snapshot_cols": {
+  "drivers": {
+   "best_championship_position": null,
+   "best_starting_grid_position": null,
+   "best_race_result": null,
+   "total_championship_wins": null,
+   "total_race_entries": null,
+   "total_race_starts": null,
+   "total_race_wins": null,
+   "total_race_laps": null,
+   "total_podiums": null,
+   "total_points": null,
+   "total_championship_points": null,
+   "total_pole_positions": null,
+   "total_fastest_laps": null
+  },
+  "constructors": {
+   "total_race_wins": null,
+   "total_podiums": null,
+   "total_points": null,
+   "total_championship_wins": null,
+   "best_championship_position": null
+  },
+  "circuits": {
+   "total_races_held": null
+  }
+ },
+ "date_cols": {
+  "races": [
+   "race_date"
+  ],
+  "race_results": [
+   "race_date"
+  ],
+  "qualifying_results": [
+   "race_date"
+  ],
+  "driver_standings": [
+   "race_date"
+  ],
+  "constructor_standings": [
+   "race_date"
+  ],
+  "pit_stops": [
+   "race_date"
+  ],
+  "drivers": [
+   "date_of_birth"
+  ]
+ }
+}

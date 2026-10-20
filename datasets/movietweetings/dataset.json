@@ -1,0 +1,84 @@
+{
+ "dataset": "movietweetings",
+ "data_dir": "data/movietweetings",
+ "availability_map": "availability_map.json",
+ "title": "MovieTweetings",
+ "domain": "recommendation / social web",
+ "kind": "real",
+ "source": "https://github.com/sidooms/MovieTweetings latest/",
+ "license": "see repository (research use)",
+ "entity": {
+  "table": "ratings",
+  "column": "user_id",
+  "n_entities": 400
+ },
+ "seeds": {
+  "dev": [
+   "2016-01-01",
+   "2018-01-01",
+   "2020-01-01"
+  ],
+  "held_out": [
+   "2015-01-01",
+   "2017-01-01",
+   "2019-01-01"
+  ]
+ },
+ "tasks": [
+  {
+   "name": "movietweetings_user_active_next_180d",
+   "entity": "user_id",
+   "horizon_days": 180,
+   "type": "binary",
+   "description": "user rates at least one movie in (t, t+180d]"
+  }
+ ],
+ "roughness": [
+  {
+   "class": "neighbor_path",
+   "where": "movie popularity / mean rating must be computed on ratings <= t",
+   "checker": "witness"
+  },
+  {
+   "class": "entity_existence",
+   "where": "no user or movie creation time; first rating is the only evidence",
+   "checker": "documented"
+  }
+ ],
+ "controls": {
+  "correct.py": {
+   "class": null,
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_row_cutoff.py": {
+   "class": "row_cutoff",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": true,
+     "canary": null
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_neighbor_path.py": {
+   "class": "neighbor_path",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": true,
+     "canary": false
+    },
+    "snapshot_ext": false,
+    "note": "canary keeps future rows (only perturbs non-key values), so counts do not change"
+   }
+  }
+ }
+}

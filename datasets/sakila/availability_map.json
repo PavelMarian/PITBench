@@ -1,0 +1,31 @@
+{
+ "_comment": "customer.create_date (2006-02-14 for everyone) and last_update are load-time stamps, deliberately not time channels. customer.active and film rental terms are end-of-data values.",
+ "time_cols": {
+  "rental": "rental_date",
+  "payment": "payment_date"
+ },
+ "self_availability_cols": {
+  "rental": [
+   "return_date"
+  ]
+ },
+ "gatekeeper_cols": {},
+ "key_hints": [
+  "_id"
+ ],
+ "snapshot_cols": {
+  "customer": {
+   "active": null
+  },
+  "film": {
+   "rental_rate": null,
+   "rental_duration": null,
+   "replacement_cost": null
+  }
+ },
+ "date_cols": {
+  "customer": [
+   "create_date"
+  ]
+ }
+}

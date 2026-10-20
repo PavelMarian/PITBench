@@ -1,0 +1,13 @@
+{
+ "_comment": "Only ratings carry time. movies/users/movie_genres are static lookups; entity existence is evidenced only by the first rating.",
+ "time_cols": {
+  "ratings": "ts"
+ },
+ "self_availability_cols": {},
+ "gatekeeper_cols": {},
+ "key_hints": [
+  "_id"
+ ],
+ "snapshot_cols": {},
+ "date_cols": {}
+}

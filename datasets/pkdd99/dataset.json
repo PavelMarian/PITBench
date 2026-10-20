@@ -1,0 +1,140 @@
+{
+ "dataset": "pkdd99",
+ "data_dir": "data/pkdd99",
+ "availability_map": "availability_map.json",
+ "title": "PKDD'99 Financial (Czech bank)",
+ "domain": "banking",
+ "kind": "real",
+ "source": "https://github.com/jlacko/berka-dataset (PKDD'99 Discovery Challenge files)",
+ "license": "research use (PKDD'99 Discovery Challenge)",
+ "entity": {
+  "table": "account",
+  "column": "account_id",
+  "n_entities": 200
+ },
+ "seeds": {
+  "dev": [
+   "1997-01-01",
+   "1997-07-01",
+   "1998-01-01"
+  ],
+  "held_out": [
+   "1996-07-01",
+   "1997-04-01",
+   "1998-07-01"
+  ]
+ },
+ "tasks": [
+  {
+   "name": "pkdd99_account_low_activity_next_90d",
+   "entity": "account_id",
+   "horizon_days": 90,
+   "type": "binary",
+   "description": "fewer than 13 transactions in (t, t+90d] (about the bottom quarter of active accounts)"
+  }
+ ],
+ "anti_tasks": [
+  {
+   "name": "loan_status_default",
+   "why": "the classic PKDD target (status B/D) is the status at the END of the data -- a label defined by a snapshot, not by a window after t"
+  }
+ ],
+ "roughness": [
+  {
+   "class": "snapshot",
+   "where": "loan.status (end-of-data status)",
+   "checker": "snapshot_ext"
+  },
+  {
+   "class": "snapshot",
+   "where": "standing_orders: no date at all, state at the dump",
+   "checker": "snapshot_ext"
+  },
+  {
+   "class": "late_value",
+   "where": "district.unemployment_1996 / crimes_1996 (known from 1997-01-01)",
+   "checker": "snapshot_ext"
+  },
+  {
+   "class": "entity_existence",
+   "where": "account.open_date: accounts opened after t must not get features",
+   "checker": "witness"
+  },
+  {
+   "class": "restamp",
+   "where": "dates stored as YYMMDD integers; client birth date hidden in birth_number (decoded)",
+   "checker": "documented"
+  }
+ ],
+ "controls": {
+  "correct.py": {
+   "class": null,
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_row_cutoff.py": {
+   "class": "row_cutoff",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": true,
+     "canary": null
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_entity_existence.py": {
+   "class": "entity_existence",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": true,
+     "canary": false
+    },
+    "snapshot_ext": false
+   }
+  },
+  "snapshot_loan_status.py": {
+   "class": "snapshot",
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": true,
+    "note": "known blind spot of pit-check v1; caught by the snapshot extension"
+   }
+  },
+  "snapshot_district_1996.py": {
+   "class": "late_value",
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": true,
+    "note": "known blind spot of pit-check v1; caught by the snapshot extension"
+   }
+  },
+  "snapshot_standing_orders.py": {
+   "class": "snapshot",
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": true,
+    "note": "known blind spot of pit-check v1; caught by the snapshot extension"
+   }
+  }
+ }
+}

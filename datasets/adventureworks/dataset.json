@@ -1,0 +1,115 @@
+{
+ "dataset": "adventureworks",
+ "data_dir": "data/adventureworks",
+ "availability_map": "availability_map.json",
+ "title": "AdventureWorks OLTP (sales + production)",
+ "domain": "retail / manufacturing",
+ "kind": "sample (synthetic, realistic schema)",
+ "source": "https://github.com/microsoft/sql-server-samples adventure-works/oltp-install-script",
+ "license": "MIT",
+ "entity": {
+  "table": "sales_order_detail",
+  "column": "product_id",
+  "n_entities": 100
+ },
+ "seeds": {
+  "dev": [
+   "2023-07-01",
+   "2024-01-01",
+   "2024-07-01"
+  ],
+  "held_out": [
+   "2023-01-01",
+   "2023-10-01",
+   "2025-01-01"
+  ]
+ },
+ "tasks": [
+  {
+   "name": "adventureworks_product_sold_next_90d",
+   "entity": "product_id",
+   "horizon_days": 90,
+   "type": "binary",
+   "description": "product sold in (t, t+90d]"
+  }
+ ],
+ "roughness": [
+  {
+   "class": "snapshot",
+   "where": "product.list_price / standard_cost (current values); true history in product_*_history",
+   "checker": "snapshot_ext"
+  },
+  {
+   "class": "dump_aggregate",
+   "where": "sales_territory / sales_person sales_ytd, sales_last_year",
+   "checker": "snapshot_ext"
+  },
+  {
+   "class": "late_value",
+   "where": "sales_order_header.ship_date, product.sell_end_date / discontinued_date, history end_date",
+   "checker": "canary"
+  },
+  {
+   "class": "restamp",
+   "where": "modified_date: load time on dimensions, ship time on order headers",
+   "checker": "map_choice"
+  },
+  {
+   "class": "wrong_time_column",
+   "where": "due_date and special_offer start/end are planned dates",
+   "checker": "map_choice"
+  },
+  {
+   "class": "time_inheritance",
+   "where": "sales_order_detail has no own time (ts = header order_date)",
+   "checker": "map_choice"
+  }
+ ],
+ "controls": {
+  "correct.py": {
+   "class": null,
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_row_cutoff.py": {
+   "class": "row_cutoff",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": true,
+     "canary": null
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_late_value.py": {
+   "class": "late_value",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": false,
+     "canary": true
+    },
+    "snapshot_ext": false
+   }
+  },
+  "snapshot_list_price.py": {
+   "class": "snapshot",
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": true,
+    "note": "known blind spot of pit-check v1; caught by the snapshot extension"
+   }
+  }
+ }
+}

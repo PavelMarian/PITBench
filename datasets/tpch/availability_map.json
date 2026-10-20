@@ -1,0 +1,37 @@
+{
+ "_comment": "Ship/receipt dates are known when they happen; commit_date is planned. return_flag/line_status/order_status are frozen at the spec's CURRENTDATE 1995-06-17; acct_balance is a current balance.",
+ "time_cols": {
+  "orders": "order_date",
+  "lineitem": "ts"
+ },
+ "self_availability_cols": {
+  "lineitem": [
+   "ship_date",
+   "receipt_date"
+  ]
+ },
+ "gatekeeper_cols": {},
+ "key_hints": [
+  "_id"
+ ],
+ "snapshot_cols": {
+  "lineitem": {
+   "return_flag": "1995-06-17",
+   "line_status": "1995-06-17"
+  },
+  "orders": {
+   "order_status": "1995-06-17"
+  },
+  "customer": {
+   "acct_balance": null
+  },
+  "supplier": {
+   "acct_balance": null
+  }
+ },
+ "date_cols": {
+  "lineitem": [
+   "commit_date"
+  ]
+ }
+}

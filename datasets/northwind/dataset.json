@@ -1,0 +1,105 @@
+{
+ "dataset": "northwind",
+ "data_dir": "data/northwind",
+ "availability_map": "availability_map.json",
+ "title": "Northwind traders",
+ "domain": "wholesale",
+ "kind": "sample (synthetic)",
+ "source": "https://github.com/graphql-compose/graphql-compose-examples examples/northwind/data/csv",
+ "license": "MIT",
+ "entity": {
+  "table": "customers",
+  "column": "customer_id",
+  "n_entities": 91
+ },
+ "seeds": {
+  "dev": [
+   "1997-06-01",
+   "1997-10-01",
+   "1998-02-01"
+  ],
+  "held_out": [
+   "1997-03-01",
+   "1997-12-01",
+   "1998-04-01"
+  ]
+ },
+ "tasks": [
+  {
+   "name": "northwind_customer_orders_next_90d",
+   "entity": "customer_id",
+   "horizon_days": 90,
+   "type": "binary",
+   "description": "customer places an order in (t, t+90d]"
+  }
+ ],
+ "roughness": [
+  {
+   "class": "snapshot",
+   "where": "products.unit_price / units_in_stock / units_on_order / discontinued (end-of-data); historical price in order_details.unit_price",
+   "checker": "snapshot_ext"
+  },
+  {
+   "class": "late_value",
+   "where": "orders.shipped_date",
+   "checker": "canary"
+  },
+  {
+   "class": "wrong_time_column",
+   "where": "orders.required_date (planned)",
+   "checker": "map_choice"
+  },
+  {
+   "class": "time_inheritance",
+   "where": "order_details have no own time",
+   "checker": "map_choice"
+  }
+ ],
+ "controls": {
+  "correct.py": {
+   "class": null,
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_row_cutoff.py": {
+   "class": "row_cutoff",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": true,
+     "canary": null
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_late_value.py": {
+   "class": "late_value",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": false,
+     "canary": true
+    },
+    "snapshot_ext": false
+   }
+  },
+  "snapshot_price.py": {
+   "class": "snapshot",
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": true,
+    "note": "known blind spot of pit-check v1; caught by the snapshot extension"
+   }
+  }
+ }
+}

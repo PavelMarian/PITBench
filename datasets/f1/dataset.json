@@ -1,0 +1,130 @@
+{
+ "dataset": "f1",
+ "data_dir": "data/f1",
+ "availability_map": "availability_map.json",
+ "title": "Formula 1 (f1db, seasons 2000+)",
+ "domain": "sports",
+ "kind": "real",
+ "source": "https://github.com/f1db/f1db releases/latest f1db-csv.zip",
+ "license": "CC BY 4.0",
+ "entity": {
+  "table": "drivers",
+  "column": "driver_id",
+  "n_entities": 60
+ },
+ "seeds": {
+  "dev": [
+   "2019-07-14",
+   "2021-09-05",
+   "2023-05-28"
+  ],
+  "held_out": [
+   "2018-06-24",
+   "2022-07-10",
+   "2024-10-20"
+  ],
+  "_note": "every seed is a race day (midnight), so the boundary class is exercised"
+ },
+ "tasks": [
+  {
+   "name": "f1_driver_podium_next_60d",
+   "entity": "driver_id",
+   "horizon_days": 60,
+   "type": "binary",
+   "description": "driver finishes in the top 3 of a race in (t, t+60d]"
+  },
+  {
+   "name": "f1_driver_dnf_next_60d",
+   "entity": "driver_id",
+   "horizon_days": 60,
+   "type": "binary",
+   "description": "driver has a DNF/DNS/DSQ/NC result in (t, t+60d]"
+  }
+ ],
+ "roughness": [
+  {
+   "class": "boundary",
+   "where": "source race 'date' is midnight; races start later that day; time of day missing for many races",
+   "checker": "witness (only with available_at in the map and race-day seeds)"
+  },
+  {
+   "class": "time_inheritance",
+   "where": "results, standings, pit stops have no own time; qualifying happens before the race but is keyed by race",
+   "checker": "map_choice"
+  },
+  {
+   "class": "dump_aggregate",
+   "where": "drivers/constructors total_* and best_*, circuits.total_races_held",
+   "checker": "snapshot_ext"
+  },
+  {
+   "class": "late_value",
+   "where": "drivers.date_of_death",
+   "checker": "canary"
+  },
+  {
+   "class": "wrong_time_column",
+   "where": "races table lists scheduled future races (calendar known in advance; timed here by race start)",
+   "checker": "documented"
+  }
+ ],
+ "map_variants": {
+  "availability_map.naive.json": "time = source race date at midnight; ablation showing the boundary leak passes"
+ },
+ "controls": {
+  "correct.py": {
+   "class": null,
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_row_cutoff.py": {
+   "class": "row_cutoff",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": true,
+     "canary": null
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_boundary.py": {
+   "class": "boundary",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": true,
+     "canary": null
+    },
+    "snapshot_ext": false
+   },
+   "expected_naive_map": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": false,
+    "note": "missed under the naive map"
+   }
+  },
+  "snapshot_career_totals.py": {
+   "class": "dump_aggregate",
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": true,
+    "note": "known blind spot of pit-check v1; caught by the snapshot extension"
+   }
+  }
+ }
+}

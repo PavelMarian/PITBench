@@ -1,0 +1,37 @@
+{
+ "_comment": "client/disp/district/standing_orders have no time channel. loan.status and standing_orders are end-of-data snapshots; district 1996 statistics are valid from 1997-01-01.",
+ "time_cols": {
+  "account": "open_date",
+  "trans": "date",
+  "loan": "granted_date",
+  "card": "issued"
+ },
+ "self_availability_cols": {},
+ "gatekeeper_cols": {},
+ "key_hints": [
+  "_id"
+ ],
+ "snapshot_cols": {
+  "loan": {
+   "status": null
+  },
+  "standing_orders": {
+   "amount": null,
+   "k_symbol": null,
+   "bank_to": null,
+   "account_to": null
+  },
+  "district": {
+   "unemployment_1996": "stats_1996_known_from",
+   "crimes_1996": "stats_1996_known_from"
+  }
+ },
+ "date_cols": {
+  "client": [
+   "birth_date"
+  ],
+  "district": [
+   "stats_1996_known_from"
+  ]
+ }
+}

@@ -1,0 +1,41 @@
+{
+ "_comment": "Same channels as the map PITBULL's published numbers were measured under (references/example-availability-map.olist.json), plus the derived order_status_events table and the PITBench snapshot extension.",
+ "time_cols": {
+  "orders": "order_purchase_timestamp",
+  "order_items": "ts",
+  "reviews": "review_creation_date",
+  "payments": "ts",
+  "order_status_events": "ts"
+ },
+ "self_availability_cols": {
+  "orders": [
+   "order_approved_at",
+   "order_delivered_carrier_date",
+   "order_delivered_customer_date"
+  ],
+  "reviews": [
+   "review_answer_timestamp"
+  ]
+ },
+ "gatekeeper_cols": {},
+ "key_hints": [
+  "_id",
+  "id",
+  "zip",
+  "prefix",
+  "order_item"
+ ],
+ "snapshot_cols": {
+  "orders": {
+   "order_status": "order_delivered_customer_date"
+  }
+ },
+ "date_cols": {
+  "orders": [
+   "order_estimated_delivery_date"
+  ],
+  "order_items": [
+   "shipping_limit_date"
+  ]
+ }
+}

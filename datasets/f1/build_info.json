@@ -1,0 +1,167 @@
+{
+ "dataset": "f1",
+ "tables": {
+  "races": {
+   "rows": 526,
+   "columns": [
+    "race_id",
+    "year",
+    "round",
+    "race_date",
+    "available_at",
+    "qualifying_available_at",
+    "grand_prix_id",
+    "circuit_id",
+    "circuit_type",
+    "laps",
+    "distance",
+    "drivers_championship_decider",
+    "constructors_championship_decider"
+   ]
+  },
+  "race_results": {
+   "rows": 10936,
+   "columns": [
+    "race_id",
+    "driver_id",
+    "constructor_id",
+    "engine_manufacturer_id",
+    "position_display_order",
+    "position_number",
+    "position_text",
+    "grid_position_number",
+    "laps",
+    "time_millis",
+    "reason_retired",
+    "points",
+    "pit_stops",
+    "fastest_lap",
+    "race_date",
+    "available_at"
+   ]
+  },
+  "qualifying_results": {
+   "rows": 10911,
+   "columns": [
+    "race_id",
+    "driver_id",
+    "constructor_id",
+    "position_number",
+    "position_text",
+    "time_millis",
+    "laps",
+    "race_date",
+    "available_at"
+   ]
+  },
+  "driver_standings": {
+   "rows": 11232,
+   "columns": [
+    "race_id",
+    "driver_id",
+    "position_number",
+    "points",
+    "championship_won",
+    "race_date",
+    "available_at"
+   ]
+  },
+  "constructor_standings": {
+   "rows": 5454,
+   "columns": [
+    "race_id",
+    "constructor_id",
+    "engine_manufacturer_id",
+    "position_number",
+    "points",
+    "championship_won",
+    "race_date",
+    "available_at"
+   ]
+  },
+  "pit_stops": {
+   "rows": 19672,
+   "columns": [
+    "race_id",
+    "driver_id",
+    "constructor_id",
+    "stop",
+    "lap",
+    "time_millis",
+    "race_date",
+    "available_at"
+   ]
+  },
+  "drivers": {
+   "rows": 130,
+   "columns": [
+    "driver_id",
+    "permanent_number",
+    "gender",
+    "date_of_birth",
+    "date_of_death",
+    "country_of_birth_country_id",
+    "nationality_country_id",
+    "best_championship_position",
+    "best_starting_grid_position",
+    "best_race_result",
+    "best_sprint_race_result",
+    "total_championship_wins",
+    "total_race_entries",
+    "total_race_starts",
+    "total_race_wins",
+    "total_race_laps",
+    "total_podiums",
+    "total_points",
+    "total_championship_points",
+    "total_pole_positions",
+    "total_fastest_laps",
+    "total_sprint_race_starts",
+    "total_sprint_race_wins",
+    "total_driver_of_the_day",
+    "total_grand_slams"
+   ]
+  },
+  "constructors": {
+   "rows": 41,
+   "columns": [
+    "constructor_id",
+    "country_id",
+    "best_championship_position",
+    "best_starting_grid_position",
+    "best_race_result",
+    "best_sprint_race_result",
+    "total_championship_wins",
+    "total_race_entries",
+    "total_race_starts",
+    "total_race_wins",
+    "total1_and2_finishes",
+    "total_race_laps",
+    "total_podiums",
+    "total_podium_races",
+    "total_points",
+    "total_championship_points",
+    "total_pole_positions",
+    "total_fastest_laps",
+    "total_sprint_race_starts",
+    "total_sprint_race_wins"
+   ]
+  },
+  "circuits": {
+   "rows": 78,
+   "columns": [
+    "circuit_id",
+    "type",
+    "direction",
+    "country_id",
+    "length",
+    "turns",
+    "total_races_held"
+   ]
+  }
+ },
+ "raw_sha256": {
+  "f1db-csv.zip": "1c5c07d064e2988cb31a44206cc679662e0523a9bde0c191eed8ffc22831eec6"
+ },
+ "build_seconds": 0.6
+}

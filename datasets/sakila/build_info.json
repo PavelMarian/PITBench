@@ -1,0 +1,100 @@
+{
+ "dataset": "sakila",
+ "tables": {
+  "rental": {
+   "rows": 16044,
+   "columns": [
+    "rental_id",
+    "rental_date",
+    "inventory_id",
+    "customer_id",
+    "return_date",
+    "staff_id",
+    "last_update"
+   ]
+  },
+  "payment": {
+   "rows": 16049,
+   "columns": [
+    "payment_id",
+    "customer_id",
+    "staff_id",
+    "rental_id",
+    "amount",
+    "payment_date",
+    "last_update"
+   ]
+  },
+  "inventory": {
+   "rows": 4581,
+   "columns": [
+    "inventory_id",
+    "film_id",
+    "store_id",
+    "last_update"
+   ]
+  },
+  "film": {
+   "rows": 1000,
+   "columns": [
+    "film_id",
+    "release_year",
+    "language_id",
+    "rental_duration",
+    "rental_rate",
+    "length",
+    "replacement_cost",
+    "rating",
+    "last_update"
+   ]
+  },
+  "film_category": {
+   "rows": 1000,
+   "columns": [
+    "film_id",
+    "category_id",
+    "last_update"
+   ]
+  },
+  "category": {
+   "rows": 16,
+   "columns": [
+    "category_id",
+    "name",
+    "last_update"
+   ]
+  },
+  "customer": {
+   "rows": 599,
+   "columns": [
+    "customer_id",
+    "store_id",
+    "active",
+    "create_date",
+    "last_update"
+   ]
+  },
+  "store": {
+   "rows": 2,
+   "columns": [
+    "store_id",
+    "manager_staff_id",
+    "last_update"
+   ]
+  },
+  "staff": {
+   "rows": 2,
+   "columns": [
+    "staff_id",
+    "store_id",
+    "active",
+    "last_update"
+   ]
+  }
+ },
+ "raw_sha256": {
+  "data.sql": "4d69a56acbd3f60501e45737353707df0cf51fdb7fcab65cc9db3a72c8c85f34",
+  "schema.sql": "b1db76b3a5192f98493901a9ac40fecb9dba918feb5604b7ef6b74230a385f12"
+ },
+ "build_seconds": 0.7
+}

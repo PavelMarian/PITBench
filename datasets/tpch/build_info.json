@@ -1,0 +1,100 @@
+{
+ "dataset": "tpch",
+ "tables": {
+  "orders": {
+   "rows": 75000,
+   "columns": [
+    "order_id",
+    "customer_id",
+    "order_status",
+    "total_price",
+    "order_date",
+    "order_priority",
+    "ship_priority"
+   ]
+  },
+  "lineitem": {
+   "rows": 299814,
+   "columns": [
+    "order_id",
+    "part_id",
+    "supplier_id",
+    "line_number",
+    "quantity",
+    "extended_price",
+    "discount",
+    "tax",
+    "return_flag",
+    "line_status",
+    "ship_date",
+    "commit_date",
+    "receipt_date",
+    "ship_instruct",
+    "ship_mode",
+    "ts"
+   ]
+  },
+  "customer": {
+   "rows": 7500,
+   "columns": [
+    "customer_id",
+    "nation_id",
+    "acct_balance",
+    "market_segment"
+   ]
+  },
+  "part": {
+   "rows": 10000,
+   "columns": [
+    "part_id",
+    "mfgr",
+    "brand",
+    "type",
+    "size",
+    "container",
+    "retail_price"
+   ]
+  },
+  "supplier": {
+   "rows": 500,
+   "columns": [
+    "supplier_id",
+    "nation_id",
+    "acct_balance"
+   ]
+  },
+  "partsupp": {
+   "rows": 40000,
+   "columns": [
+    "part_id",
+    "supplier_id",
+    "avail_qty",
+    "supply_cost"
+   ]
+  },
+  "nation": {
+   "rows": 25,
+   "columns": [
+    "nation_id",
+    "region_id"
+   ]
+  },
+  "region": {
+   "rows": 5,
+   "columns": [
+    "region_id"
+   ]
+  }
+ },
+ "raw_sha256": {
+  "customer.csv": "f948227738d0476e25bcb541fa4fc991dfe780cf7ec6e93b13d9820a4acd810c",
+  "lineitem.csv": "b0efeea1e7fab661be3d014168fe3d97abae5adc89bd92456061cac90ae62ba2",
+  "nation.csv": "3d3724d0182ab4836faaae1ce0ca65e3241389ed2ef430dfa78a0f5afe3377be",
+  "orders.csv": "34dbbe7c47a63563dfc4b042c4d0e8446edd890cf8d96c291b8d448148cff117",
+  "part.csv": "e414264824c70455550de1f4bdc98c9362068097c8461d826a9cfc0fefd1e717",
+  "partsupp.csv": "ab8e3c839b96361fb40a69e76ade13168bf6d564ef4301d2d144f721d6470ffb",
+  "region.csv": "3409aa7d2a9479fa0c14e97ec195fbe61e6e26a10b116628cdf9a0c7ffaffe17",
+  "supplier.csv": "40f262e495c63ea1a4547f929a5f7427217d7aaa43710346d51bab0697b5ca6e"
+ },
+ "build_seconds": 5.2
+}

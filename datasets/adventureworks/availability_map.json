@@ -1,0 +1,62 @@
+{
+ "_comment": "modified_date is NOT a time channel (re-stamped at load / at shipping). due_date and special_offer dates are planned values known in advance. Price/cost snapshots are valid from *_as_of (start of the currently stored price).",
+ "time_cols": {
+  "sales_order_header": "order_date",
+  "sales_order_detail": "ts",
+  "product_list_price_history": "start_date",
+  "product_cost_history": "start_date"
+ },
+ "self_availability_cols": {
+  "sales_order_header": [
+   "ship_date"
+  ],
+  "product": [
+   "sell_end_date",
+   "discontinued_date"
+  ],
+  "product_list_price_history": [
+   "end_date"
+  ],
+  "product_cost_history": [
+   "end_date"
+  ]
+ },
+ "gatekeeper_cols": {},
+ "key_hints": [
+  "_id"
+ ],
+ "snapshot_cols": {
+  "product": {
+   "list_price": "list_price_as_of",
+   "standard_cost": "standard_cost_as_of"
+  },
+  "sales_territory": {
+   "sales_ytd": null,
+   "sales_last_year": null,
+   "cost_ytd": null,
+   "cost_last_year": null
+  },
+  "sales_person": {
+   "sales_ytd": null,
+   "sales_last_year": null,
+   "sales_quota": null,
+   "bonus": null
+  }
+ },
+ "date_cols": {
+  "sales_order_header": [
+   "due_date",
+   "modified_date"
+  ],
+  "special_offer": [
+   "start_date",
+   "end_date"
+  ],
+  "product": [
+   "sell_start_date",
+   "list_price_as_of",
+   "standard_cost_as_of",
+   "modified_date"
+  ]
+ }
+}

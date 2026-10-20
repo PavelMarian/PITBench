@@ -1,0 +1,105 @@
+{
+ "dataset": "sakila",
+ "data_dir": "data/sakila",
+ "availability_map": "availability_map.json",
+ "title": "Sakila DVD rental",
+ "domain": "rental",
+ "kind": "sample (synthetic)",
+ "source": "https://github.com/jOOQ/sakila sqlite-sakila-db",
+ "license": "BSD",
+ "entity": {
+  "table": "customer",
+  "column": "customer_id",
+  "n_entities": 200
+ },
+ "seeds": {
+  "dev": [
+   "2005-06-20",
+   "2005-07-15",
+   "2005-08-10"
+  ],
+  "held_out": [
+   "2005-06-05",
+   "2005-07-01",
+   "2005-08-01"
+  ]
+ },
+ "tasks": [
+  {
+   "name": "sakila_customer_rentals_next_14d",
+   "entity": "customer_id",
+   "horizon_days": 14,
+   "type": "count",
+   "description": "number of rentals in (t, t+14d]"
+  }
+ ],
+ "roughness": [
+  {
+   "class": "late_value",
+   "where": "rental.return_date",
+   "checker": "canary"
+  },
+  {
+   "class": "snapshot",
+   "where": "customer.active, film rental terms (end-of-data)",
+   "checker": "snapshot_ext"
+  },
+  {
+   "class": "entity_existence",
+   "where": "customer.create_date = 2006-02-14 for everyone, after all their rentals: unusable existence time",
+   "checker": "documented"
+  },
+  {
+   "class": "restamp",
+   "where": "last_update = load time on every table; payment.amount includes late fees but is stamped at rental time",
+   "checker": "documented"
+  }
+ ],
+ "controls": {
+  "correct.py": {
+   "class": null,
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_row_cutoff.py": {
+   "class": "row_cutoff",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": true,
+     "canary": null
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_late_value.py": {
+   "class": "late_value",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": false,
+     "canary": true
+    },
+    "snapshot_ext": false
+   }
+  },
+  "snapshot_active.py": {
+   "class": "snapshot",
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": true,
+    "note": "known blind spot of pit-check v1; caught by the snapshot extension"
+   }
+  }
+ }
+}

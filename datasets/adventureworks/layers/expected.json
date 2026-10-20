@@ -1,0 +1,156 @@
+{
+ "horizon_days": 90,
+ "label_task": null,
+ "controls": {
+  "task/task_correct.py": {
+   "layer": "task",
+   "what": "correct: entities seen by t, label on (t, t+h]",
+   "expected": {
+    "selection_witness": false,
+    "selection_canary": false,
+    "selection_snapshot": false,
+    "label_witness": false,
+    "label_canary": false,
+    "label_snapshot": false,
+    "label_tie": false,
+    "label_tie_inject": false
+   }
+  },
+  "task/task_correct_count.py": {
+   "layer": "task",
+   "what": "count label on (t, t+h]",
+   "expected": {
+    "selection_witness": false,
+    "selection_canary": false,
+    "selection_snapshot": false,
+    "label_witness": false,
+    "label_canary": false,
+    "label_snapshot": false,
+    "label_tie": false,
+    "label_tie_inject": false
+   }
+  },
+  "task/task_leak_label_boundary_count.py": {
+   "layer": "task",
+   "what": "count label window closed on the left",
+   "expected": {
+    "label_tie_inject": true
+   }
+  },
+  "task/task_leak_selection_future.py": {
+   "layer": "task",
+   "what": "entity selection uses the whole history",
+   "expected": {
+    "selection_witness": true
+   }
+  },
+  "task/task_leak_label_no_cap.py": {
+   "layer": "task",
+   "what": "label window without the horizon cap",
+   "expected": {
+    "label_witness": true
+   }
+  },
+  "task/task_leak_label_boundary.py": {
+   "layer": "task",
+   "what": "label window closed on the left",
+   "expected": {
+    "label_tie": null,
+    "label_tie_inject": true
+   }
+  },
+  "model/model_correct.py": {
+   "layer": "model",
+   "what": "training seeds t_i with t_i + h <= t",
+   "expected": {
+    "witness": false,
+    "canary": false,
+    "snapshot": false
+   }
+  },
+  "model/model_leak_label_overlap.py": {
+   "layer": "model",
+   "what": "training labels overlap the period after t",
+   "expected": {
+    "witness": true
+   }
+  },
+  "model/model_leak_future_target_encoding.py": {
+   "layer": "model",
+   "what": "target encoding fitted on future labels",
+   "expected": {
+    "witness": true
+   }
+  },
+  "model/model_leak_nontemporal_sampling.py": {
+   "layer": "model",
+   "what": "neighbour sampling without a time constraint",
+   "expected": {
+    "witness": true
+   }
+  },
+  "context/icl_correct.py": {
+   "layer": "context",
+   "what": "context examples whose labels are known by t",
+   "expected": {
+    "context_witness": false,
+    "context_canary": false,
+    "context_snapshot": false,
+    "predict_witness": false
+   }
+  },
+  "context/icl_leak_future_labels.py": {
+   "layer": "context",
+   "what": "context examples whose label windows reach past t",
+   "expected": {
+    "context_witness": true
+   }
+  },
+  "context/icl_leak_retrieval_all.py": {
+   "layer": "context",
+   "what": "retrieval over the whole table, including examples after t",
+   "expected": {
+    "context_witness": true
+   }
+  },
+  "agent/agent_correct.py": {
+   "layer": "agent",
+   "what": "uses only relative time and no entity identity",
+   "expected": {
+    "identity_or_calendar_dependence": false
+   }
+  },
+  "agent/agent_leak_known_entities.py": {
+   "layer": "agent",
+   "what": "prior on memorised entities (pretraining-knowledge proxy)",
+   "expected": {
+    "identity_or_calendar_dependence": true
+   }
+  },
+  "agent/agent_leak_calendar_prior.py": {
+   "layer": "agent",
+   "what": "prior tied to an absolute calendar date",
+   "expected": {
+    "identity_or_calendar_dependence": true
+   }
+  }
+ },
+ "entity": {
+  "events": "sales_order_detail",
+  "time": "ts",
+  "key": "product_id",
+  "eligible_days": 180
+ },
+ "known_entities": [
+  "870",
+  "921",
+  "712",
+  "707",
+  "711",
+  "708",
+  "922",
+  "923",
+  "930",
+  "877"
+ ]
+}

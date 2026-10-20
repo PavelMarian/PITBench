@@ -1,0 +1,41 @@
+{
+ "dataset": "movietweetings",
+ "tables": {
+  "ratings": {
+   "rows": 921398,
+   "columns": [
+    "user_id",
+    "movie_id",
+    "rating",
+    "ts"
+   ]
+  },
+  "movies": {
+   "rows": 38018,
+   "columns": [
+    "movie_id",
+    "title_year"
+   ]
+  },
+  "movie_genres": {
+   "rows": 90081,
+   "columns": [
+    "movie_id",
+    "genre"
+   ]
+  },
+  "users": {
+   "rows": 71707,
+   "columns": [
+    "user_id",
+    "twitter_user_id"
+   ]
+  }
+ },
+ "raw_sha256": {
+  "movies.dat": "0403d193fe09b41b2f1c5451e526d74c8c4d8629adb66646be51ba785018001f",
+  "ratings.dat": "f8a46fe159d4bea12d5ea38922807ce1d8e7c2563785ebc84c479357d80feb13",
+  "users.dat": "078c505c1b20b7b74a89bb9d034a12c8048e498189d1f14e528cc2e84d81a956"
+ },
+ "build_seconds": 7.0
+}

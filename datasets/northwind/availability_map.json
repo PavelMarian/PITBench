@@ -1,0 +1,33 @@
+{
+ "_comment": "required_date is planned (known at order time). products' price/stock/discontinued are end-of-data values; the price actually charged is order_details.unit_price.",
+ "time_cols": {
+  "orders": "order_date",
+  "order_details": "ts"
+ },
+ "self_availability_cols": {
+  "orders": [
+   "shipped_date"
+  ]
+ },
+ "gatekeeper_cols": {},
+ "key_hints": [
+  "_id"
+ ],
+ "snapshot_cols": {
+  "products": {
+   "unit_price": null,
+   "units_in_stock": null,
+   "units_on_order": null,
+   "discontinued": null
+  }
+ },
+ "date_cols": {
+  "orders": [
+   "required_date"
+  ],
+  "employees": [
+   "birth_date",
+   "hire_date"
+  ]
+ }
+}

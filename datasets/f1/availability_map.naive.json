@@ -1,0 +1,14 @@
+{
+ "_comment": "ABLATION, not for use: what a map built from the source's own 'date' column looks like. Results are timed at midnight of race day, so a feature filtering race_date <= t passes the check on race-day seeds.",
+ "time_cols": {
+  "races": "race_date",
+  "race_results": "race_date",
+  "qualifying_results": "race_date",
+  "driver_standings": "race_date",
+  "constructor_standings": "race_date",
+  "pit_stops": "race_date"
+ },
+ "self_availability_cols": {"drivers": ["date_of_death"]},
+ "gatekeeper_cols": {},
+ "key_hints": ["_id"]
+}

@@ -1,0 +1,110 @@
+{
+ "dataset": "tpch",
+ "data_dir": "data/tpch",
+ "availability_map": "availability_map.json",
+ "title": "TPC-H (SF 0.05)",
+ "domain": "order entry (benchmark)",
+ "kind": "synthetic, generated",
+ "source": "tpchgen-cli csv -s 0.05 (PyPI tpchgen-cli; dbgen-compatible)",
+ "license": "TPC-H specification data (generated)",
+ "entity": {
+  "table": "orders",
+  "column": "customer_id",
+  "n_entities": 400
+ },
+ "seeds": {
+  "dev": [
+   "1994-01-01",
+   "1995-01-01",
+   "1996-01-01"
+  ],
+  "held_out": [
+   "1993-07-01",
+   "1995-04-01",
+   "1997-01-01"
+  ]
+ },
+ "tasks": [
+  {
+   "name": "tpch_customer_orders_next_180d",
+   "entity": "customer_id",
+   "horizon_days": 180,
+   "type": "binary",
+   "description": "customer places an order in (t, t+180d]"
+  }
+ ],
+ "roughness": [
+  {
+   "class": "snapshot",
+   "where": "lineitem.return_flag / line_status, orders.order_status frozen at CURRENTDATE 1995-06-17 (ground truth by spec)",
+   "checker": "snapshot_ext"
+  },
+  {
+   "class": "snapshot",
+   "where": "customer/supplier acct_balance (single current balance)",
+   "checker": "snapshot_ext"
+  },
+  {
+   "class": "late_value",
+   "where": "lineitem.ship_date / receipt_date",
+   "checker": "canary"
+  },
+  {
+   "class": "wrong_time_column",
+   "where": "lineitem.commit_date (planned)",
+   "checker": "map_choice"
+  },
+  {
+   "class": "time_inheritance",
+   "where": "lineitem has no own time (ts = order_date)",
+   "checker": "map_choice"
+  }
+ ],
+ "controls": {
+  "correct.py": {
+   "class": null,
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_row_cutoff.py": {
+   "class": "row_cutoff",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": true,
+     "canary": null
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_late_value.py": {
+   "class": "late_value",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": false,
+     "canary": true
+    },
+    "snapshot_ext": false
+   }
+  },
+  "snapshot_return_flag.py": {
+   "class": "snapshot",
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": true,
+    "note": "known blind spot of pit-check v1; caught by the snapshot extension"
+   }
+  }
+ }
+}

@@ -1,0 +1,126 @@
+{
+ "dataset": "olist",
+ "data_dir": "data/olist",
+ "availability_map": "availability_map.json",
+ "title": "Olist Brazilian e-commerce",
+ "domain": "marketplace",
+ "kind": "real",
+ "source": "Kaggle olist/brazilian-ecommerce (copy in this project's history, commit a9cd898, PITFALL_olist_data/)",
+ "license": "CC BY-NC-SA 4.0",
+ "entity": {
+  "table": "products",
+  "column": "product_id",
+  "n_entities": 300
+ },
+ "seeds": {
+  "dev": [
+   "2018-01-01",
+   "2018-04-01",
+   "2018-07-01"
+  ],
+  "held_out": [
+   "2017-10-01",
+   "2018-02-01",
+   "2018-06-01"
+  ]
+ },
+ "tasks": [
+  {
+   "name": "olist_product_sold_next_90d",
+   "entity": "product_id",
+   "horizon_days": 90,
+   "type": "binary",
+   "description": "product appears in at least one order purchased in (t, t+90d]"
+  }
+ ],
+ "roughness": [
+  {
+   "class": "late_value",
+   "where": "orders.order_approved_at / order_delivered_carrier_date / order_delivered_customer_date, reviews.review_answer_timestamp",
+   "checker": "canary"
+  },
+  {
+   "class": "time_inheritance",
+   "where": "order_items, payments (no own time; ts = order purchase time; payments.approved_at offered as the stricter reading)",
+   "checker": "map_choice"
+  },
+  {
+   "class": "snapshot",
+   "where": "orders.order_status (final status only); derived order_status_events gives the status as of t",
+   "checker": "snapshot_ext"
+  },
+  {
+   "class": "wrong_time_column",
+   "where": "order_items.shipping_limit_date, orders.order_estimated_delivery_date (planned dates in the future of the row)",
+   "checker": "map_choice"
+  },
+  {
+   "class": "boundary",
+   "where": "reviews.review_creation_date is a date at midnight",
+   "checker": "documented"
+  },
+  {
+   "class": "entity_existence",
+   "where": "customers: customer_id is per order, no creation time; products/sellers have no time",
+   "checker": "documented"
+  }
+ ],
+ "controls": {
+  "correct.py": {
+   "class": null,
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": false
+   }
+  },
+  "correct_status_events.py": {
+   "class": null,
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_row_cutoff.py": {
+   "class": "row_cutoff",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": true,
+     "canary": null
+    },
+    "snapshot_ext": false
+   }
+  },
+  "leak_late_value.py": {
+   "class": "late_value",
+   "expected": {
+    "pit_check": {
+     "verdict": "LEAK",
+     "witness": false,
+     "canary": true
+    },
+    "snapshot_ext": false
+   }
+  },
+  "snapshot_status.py": {
+   "class": "snapshot",
+   "expected": {
+    "pit_check": {
+     "verdict": "CLEAN",
+     "witness": false,
+     "canary": false
+    },
+    "snapshot_ext": true,
+    "note": "known blind spot of pit-check v1; caught by the snapshot extension"
+   }
+  }
+ }
+}

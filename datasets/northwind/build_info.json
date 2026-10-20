@@ -1,0 +1,104 @@
+{
+ "dataset": "northwind",
+ "tables": {
+  "orders": {
+   "rows": 830,
+   "columns": [
+    "order_id",
+    "customer_id",
+    "employee_id",
+    "order_date",
+    "required_date",
+    "shipped_date",
+    "ship_via",
+    "freight",
+    "ship_city",
+    "ship_region",
+    "ship_country"
+   ]
+  },
+  "order_details": {
+   "rows": 2155,
+   "columns": [
+    "order_id",
+    "product_id",
+    "unit_price",
+    "quantity",
+    "discount",
+    "ts"
+   ]
+  },
+  "products": {
+   "rows": 77,
+   "columns": [
+    "product_id",
+    "product_name",
+    "supplier_id",
+    "category_id",
+    "quantity_per_unit",
+    "unit_price",
+    "units_in_stock",
+    "units_on_order",
+    "reorder_level",
+    "discontinued"
+   ]
+  },
+  "customers": {
+   "rows": 91,
+   "columns": [
+    "customer_id",
+    "city",
+    "region",
+    "country"
+   ]
+  },
+  "employees": {
+   "rows": 9,
+   "columns": [
+    "employee_id",
+    "title",
+    "birth_date",
+    "hire_date",
+    "city",
+    "country",
+    "reports_to"
+   ]
+  },
+  "categories": {
+   "rows": 8,
+   "columns": [
+    "category_id",
+    "category_name"
+   ]
+  },
+  "suppliers": {
+   "rows": 29,
+   "columns": [
+    "supplier_id",
+    "city",
+    "country"
+   ]
+  },
+  "shippers": {
+   "rows": 3,
+   "columns": [
+    "shipper_id",
+    "company_name"
+   ]
+  }
+ },
+ "raw_sha256": {
+  "categories.csv": "5b87b82033828a14a05296e6671175b3131995ca53c85a4813bd90a1f052f64f",
+  "customers.csv": "44be747753e374218df147a247e2a10b31bafe54942a769df392ff0ced66aaef",
+  "employee_territories.csv": "4379b96795c0313c0ce201456374dce68e59c3591ce2beb60503c3d48b5842ab",
+  "employees.csv": "e256815f5880dd04a179bf72257f3c41419fac9eb952e44f8b7d57d13d62f2da",
+  "order_details.csv": "a95f3f1697f6e8d9a7683e5fe6bbb934b9262adb9d58e0c727bac532a0ee725b",
+  "orders.csv": "2d6862a3b12d1c4d50d23f8178e457449042bf9239d48d5b95907ac73b51ce58",
+  "products.csv": "bc377ab1fac01d6e99cb659d30d4bce10d77c23d8c97242c2dd5e649d2f5a4ea",
+  "regions.csv": "8de75c6245808ca3bd2aaf1c093acad2aae09d8574c632be1f6fd13e830e6cb0",
+  "shippers.csv": "bd33d3d1c925831fc08b6f61104e3a1e6a645ba4a086d9065cbd4fd60b579aee",
+  "suppliers.csv": "ee3c4925a5e66efa84266ad512252ad6a07afb5d84aa7c5457a63eb4760d8180",
+  "territories.csv": "23eec34677ee4d864a5093f73b9919817095d5ed17cd06a76d52187e5872a8fd"
+ },
+ "build_seconds": 0.1
+}
